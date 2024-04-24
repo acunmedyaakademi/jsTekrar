@@ -64,6 +64,67 @@
 //      })
 // }
 
+// const kutucuk = document.querySelector("#kutucuk");
+// const toplamTutarSpan = document.querySelector("#toplamTutar");
+// const sepetDiv = document.querySelector("#sepet");
+// const meyveler = [
+//     {
+//         id: 1,
+//         adi: "Elma",
+//         fiyati: 500,
+//     },
+//     {
+//         id: 2,
+//         adi: "Armut",
+//         fiyati: 300
+//     },
+//     {
+//         id: 3,
+//         adi: "Muz",
+//         fiyati: 200
+//     }
+// ]
+
+// let toplamTutar = 0;
+// toplamTutarSpan.textContent = toplamTutar
+
+// const sepet = []
+
+
+
+// for (const meyve of meyveler) {
+//     kutucuk.innerHTML += `
+//         <li id="${meyve.id}">${meyve.adi} - ${meyve.fiyati}$ 
+//         <button class="buy-btn">Sepete Ekle</button></li>
+//     `
+// }
+
+// for (const btn of document.querySelectorAll(".buy-btn")) {
+//     btn.addEventListener("click", function(){
+//         const tiklananMeyve = meyveler.find(meyve => meyve.id == this.parentElement.id);
+//         const eklenecekOlanMeyve = tiklananMeyve
+//         const sepetteVarMi = sepet.find(urun => urun.id == eklenecekOlanMeyve.id)
+//         if(sepetteVarMi){
+//             sepetteVarMi.adet += 1
+//         }else{
+//             eklenecekOlanMeyve.adet = 1
+//             sepet.push(eklenecekOlanMeyve)
+//         }
+
+//         console.log(sepet);
+//         sepetDiv.innerHTML = ""
+//         toplamTutar = 0;
+//         for (const urun of sepet) {
+//             sepetDiv.innerHTML += `<li>${urun.adi} - x${urun.adet} - ${urun.fiyati * urun.adet}</li>`
+//             toplamTutar += (urun.fiyati * urun.adet)
+//             console.log(toplamTutar);
+//             toplamTutarSpan.textContent = toplamTutar
+
+//         }
+//     })
+// }
+
+
 const kutucuk = document.querySelector("#kutucuk");
 const toplamTutarSpan = document.querySelector("#toplamTutar");
 const sepetDiv = document.querySelector("#sepet");
@@ -83,43 +144,64 @@ const meyveler = [
         adi: "Muz",
         fiyati: 200
     }
-]
+];
 
 let toplamTutar = 0;
-toplamTutarSpan.textContent = toplamTutar
+toplamTutarSpan.textContent = toplamTutar;
 
-const sepet = []
-
+const sepet = [];
 
 
 for (const meyve of meyveler) {
     kutucuk.innerHTML += `
         <li id="${meyve.id}">${meyve.adi} - ${meyve.fiyati}$ 
-        <button class="buy-btn">Sepete Ekle</button></li>
-    `
+        <button class="buy-btn">Sepete Ekle</button>
+        <button class="remove-btn">Sepetten Çıkar</button>
+        </li>
+    `;
 }
 
+const updateSepet = () => {
+    sepetDiv.innerHTML = "";
+    toplamTutar = 0;
+    for (const urun of sepet) {
+        sepetDiv.innerHTML += `<li>${urun.adi} - x${urun.adet} - ${urun.fiyati * urun.adet}$</li>`;
+        toplamTutar += (urun.fiyati * urun.adet);
+    }
+    toplamTutarSpan.textContent = toplamTutar;
+};
+
+
 for (const btn of document.querySelectorAll(".buy-btn")) {
-    btn.addEventListener("click", function(){
+    btn.addEventListener("click", function() {
         const tiklananMeyve = meyveler.find(meyve => meyve.id == this.parentElement.id);
-        const eklenecekOlanMeyve = tiklananMeyve
-        const sepetteVarMi = sepet.find(urun => urun.id == eklenecekOlanMeyve.id)
-        if(sepetteVarMi){
-            sepetteVarMi.adet += 1
-        }else{
-            eklenecekOlanMeyve.adet = 1
-            sepet.push(eklenecekOlanMeyve)
+        const eklenecekOlanMeyve = tiklananMeyve;
+        const sepetteVarMi = sepet.find(urun => urun.id == eklenecekOlanMeyve.id);
+        
+        if (sepetteVarMi) {
+            sepetteVarMi.adet += 1;
+        } else {
+            eklenecekOlanMeyve.adet = 1;
+            sepet.push(eklenecekOlanMeyve);
         }
+        
+        updateSepet();
+    });
+}
 
-        console.log(sepet);
-        sepetDiv.innerHTML = ""
-        toplamTutar = 0;
-        for (const urun of sepet) {
-            sepetDiv.innerHTML += `<li>${urun.adi} - x${urun.adet} - ${urun.fiyati * urun.adet}</li>`
-            toplamTutar += (urun.fiyati * urun.adet)
-            console.log(toplamTutar);
-            toplamTutarSpan.textContent = toplamTutar
-
+for (const btn of document.querySelectorAll(".remove-btn")) {
+    btn.addEventListener("click", function() {
+        const tiklananMeyve = meyveler.find(meyve => meyve.id == this.parentElement.id);
+        const sepettekiUrun = sepet.find(urun => urun.id == tiklananMeyve.id);
+        
+        if (sepettekiUrun) {
+            if (sepettekiUrun.adet > 1) {
+                sepettekiUrun.adet -= 1;
+            } else {
+                const index = sepet.indexOf(sepettekiUrun);
+                sepet.splice(index, 1);
+            }
+            updateSepet();
         }
-    })
+    });
 }

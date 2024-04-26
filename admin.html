@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/admin.js"></script>
+</head>
+<body onload="displayProducts()">   <!-- ONLOAD: body alanı tamamen hazır olduğunda "displayProducts" fonksiyonu içerisinde kodların artık kullanıcıya hazır bir halde kullanımı sunulmaktadır. -->
+  <h1>Admin Paneli</h1>
+  <h2>Ürün Ekle</h2>
+
+  <!-- ÜRÜN EKLEME FORMU.. -->
+
+  <form onsubmit="addProduct(document.getElementById('name').value, parseFloat(document.getElementById('price').value))">
+    <label for="name">Ürün Adı:</label>
+    <input type="text" id="name" required>
+    
+    <label for="price">Fiyat (TL):</label>
+    <input type="number" id="price" required>
+    
+    <button type="submit">Ekle</button>
+  </form>
+  
+  <h2>Mevcut Ürünler</h2>
+  <ul id="product-list"></ul>
+</body>
+</html>
